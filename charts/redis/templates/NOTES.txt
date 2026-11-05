@@ -1,15 +1,15 @@
 Redis can be accessed via {{ if ne (int .Values.redis.port) 0 }}port {{ .Values.redis.port }}{{ end }}  {{ if .Values.redis.tlsPort }} tls-port {{ .Values.redis.tlsPort }}{{ end }} on the following DNS name from within your cluster:
-{{ template "redis-ha.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+{{ template "redis.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
 
 To connect to your Redis server:
 
 {{- if .Values.auth }}
 1. To retrieve the redis password:
-   echo $(kubectl get secret {{ template "redis-ha.fullname" . }} -o "jsonpath={.data['auth']}" | base64 --decode)
+   echo $(kubectl get secret {{ template "redis.fullname" . }} -o "jsonpath={.data['auth']}" | base64 --decode)
 
 2. Connect to the Redis pod:
 
-   kubectl exec -it {{ template "redis-ha.fullname" . }}-server-0 -n {{ .Release.Namespace }} -c redis -- sh
+   kubectl exec -it {{ template "redis.fullname" . }}-server-0 -n {{ .Release.Namespace }} -c redis -- sh
 
 3. Connect using the Redis CLI (inside container):
 
@@ -17,9 +17,9 @@ To connect to your Redis server:
 {{- else }}
 1. Run a Redis pod that you can use as a client:
 
-   kubectl exec -it {{ template "redis-ha.fullname" . }}-server-0 -n {{ .Release.Namespace }} -c redis -- sh
+   kubectl exec -it {{ template "redis.fullname" . }}-server-0 -n {{ .Release.Namespace }} -c redis -- sh
 
 2. Connect using the Redis CLI:
 
-  redis-cli -h {{ template "redis-ha.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  redis-cli -h {{ template "redis.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
 {{- end }}

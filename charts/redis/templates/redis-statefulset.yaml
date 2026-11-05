@@ -5,10 +5,10 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ template "redis-ha.fullname" . }}-server
+  name: {{ template "redis.fullname" . }}-server
   namespace: {{ .Release.Namespace | quote }}
   labels:
-    {{ template "redis-ha.fullname" . }}: replica
+    {{ template "redis.fullname" . }}: replica
     {{- range $key, $value := .Values.extraLabels }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
@@ -19,8 +19,8 @@ spec:
   selector:
     matchLabels:
       release: {{ .Release.Name }}
-      app: {{ template "redis-ha.name" . }}
-  serviceName: {{ template "redis-ha.fullname" . }}
+      app: {{ template "redis.name" . }}
+  serviceName: {{ template "redis.fullname" . }}
   # Standalone: replicas would each be an independent, empty master
   replicas: 1
   podManagementPolicy: {{ .Values.podManagementPolicy }}
@@ -43,8 +43,8 @@ spec:
       {{- end }}
       labels:
         release: {{ .Release.Name }}
-        app: {{ template "redis-ha.name" . }}
-        {{ template "redis-ha.fullname" . }}: replica
+        app: {{ template "redis.name" . }}
+        {{ template "redis.fullname" . }}: replica
         {{- range $key, $value := .Values.labels }}
         {{ $key }}: {{ $value | toString }}
         {{- end }}
@@ -80,9 +80,9 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchLabels:
-                  app: {{ template "redis-ha.name" . }}
+                  app: {{ template "redis.name" . }}
                   release: {{ .Release.Name }}
-                  {{ template "redis-ha.fullname" . }}: replica
+                  {{ template "redis.fullname" . }}: replica
               topologyKey: kubernetes.io/hostname
     {{- else }}
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -90,9 +90,9 @@ spec:
               podAffinityTerm:
                 labelSelector:
                   matchLabels:
-                    app: {{ template "redis-ha.name" . }}
+                    app: {{ template "redis.name" . }}
                     release: {{ .Release.Name }}
-                    {{ template "redis-ha.fullname" . }}: replica
+                    {{ template "redis.fullname" . }}: replica
                 topologyKey: kubernetes.io/hostname
     {{- end }}
     {{- end }}
@@ -103,15 +103,15 @@ spec:
         whenUnsatisfiable: {{ .Values.topologySpreadConstraints.whenUnsatisfiable | default "ScheduleAnyway" }}
         labelSelector:
           matchLabels:
-            app: {{ template "redis-ha.name" . }}
+            app: {{ template "redis.name" . }}
             release: {{ .Release.Name }}
-            {{ template "redis-ha.fullname" . }}: replica
+            {{ template "redis.fullname" . }}: replica
       {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets: {{ toYaml .Values.imagePullSecrets | nindent 8 }}
       {{- end }}
       securityContext: {{- include "compatibility.renderSecurityContext" (dict "secContext" .Values.securityContext "context" $) | nindent 8 }}
-      serviceAccountName: {{ template "redis-ha.serviceAccountName" . }}
+      serviceAccountName: {{ template "redis.serviceAccountName" . }}
       automountServiceAccountToken: {{ .Values.serviceAccount.automountToken }}
       initContainers:
       {{- if .Values.sysctlImage.enabled }}
@@ -159,7 +159,7 @@ spec:
             {{- if tpl (.Values.existingSecret | default "" ) . }}
               name: {{ tpl (.Values.existingSecret | default "" ) . }}
             {{- else }}
-              name: {{ template "redis-ha.fullname" . }}
+              name: {{ template "redis.fullname" . }}
             {{- end }}
               key: {{ .Values.authKey }}
         {{- end }}
@@ -193,7 +193,7 @@ spec:
           {{- if .Values.restore.existingSecret }}
             name: {{ tpl (.Values.existingSecret | default "" ) . }}
           {{- else }}
-            name: {{ include "redis-ha.fullname" . }}-secret
+            name: {{ include "redis.fullname" . }}-secret
           {{- end }}
         volumeMounts:
         - name: data
@@ -226,7 +226,7 @@ spec:
           {{- if .Values.restore.existingSecret }}
             name: {{ tpl (.Values.existingSecret | default "" ) . }}
           {{- else }}
-            name: {{ include "redis-ha.fullname" . }}-secret
+            name: {{ include "redis.fullname" . }}-secret
           {{- end }}
         volumeMounts:
         - name: data
@@ -286,7 +286,7 @@ spec:
             {{- if tpl (.Values.existingSecret | default "" ) . }}
               name: {{ tpl (.Values.existingSecret | default "" ) . }}
             {{- else }}
-              name: {{ template "redis-ha.fullname" . }}
+              name: {{ template "redis.fullname" . }}
             {{- end }}
               key: {{ .Values.authKey }}
         {{- end }}
@@ -385,7 +385,7 @@ spec:
               {{- if tpl (.Values.existingSecret | default "" ) . }}
                 name: {{ tpl (.Values.existingSecret | default "" ) . }}
               {{- else }}
-                name: {{ template "redis-ha.fullname" . }}
+                name: {{ template "redis.fullname" . }}
               {{- end }}
                 key: {{ .Values.authKey }}
         {{- end }}
@@ -429,7 +429,7 @@ spec:
       volumes:
       - name: config
         configMap:
-          name: {{ template "redis-ha.fullname" . }}-configmap
+          name: {{ template "redis.fullname" . }}-configmap
       {{- if .Values.sysctlImage.mountHostSys }}
       - name: host-sys
         hostPath:
@@ -438,7 +438,7 @@ spec:
       {{- if .Values.exporter.script }}
       - name: script-mount
         configMap:
-          name: {{ template "redis-ha.fullname" . }}-exporter-script-configmap
+          name: {{ template "redis.fullname" . }}-exporter-script-configmap
           items:
             - key: script
               path: script.lua
@@ -449,12 +449,12 @@ spec:
           {{- if tpl (.Values.tls.secretName | default "" ) . }}
           secretName: {{ tpl (.Values.tls.secretName | default "" ) . }}
           {{- else }}
-          secretName: {{ template "redis-ha.fullname" . }}-tls-secret
+          secretName: {{ template "redis.fullname" . }}-tls-secret
           {{- end }}
       {{- end }}
       - name: health
         configMap:
-          name: {{ template "redis-ha.fullname" . }}-health-configmap
+          name: {{ template "redis.fullname" . }}-health-configmap
           defaultMode: 0755
 {{- if .Values.extraVolumes }}
 {{- toYaml .Values.extraVolumes | nindent 6 }}

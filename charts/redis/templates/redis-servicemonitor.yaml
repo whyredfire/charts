@@ -2,7 +2,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ template "redis-ha.fullname" . }}
+  name: {{ template "redis.fullname" . }}
   namespace: {{ .Values.exporter.serviceMonitor.namespace | default .Release.Namespace | quote }}
   labels:
 {{ include "labels.standard" . | indent 4 }}
@@ -35,13 +35,13 @@ spec:
     relabelings:
     {{- toYaml .Values.exporter.serviceMonitor.relabelings | nindent 6 }}
 {{- end }}
-  jobLabel: {{ template "redis-ha.fullname" . }}
+  jobLabel: {{ template "redis.fullname" . }}
   namespaceSelector:
     matchNames:
     - {{ .Release.Namespace | quote }}
   selector:
     matchLabels:
-      app: {{ template "redis-ha.name" . }}
+      app: {{ template "redis.name" . }}
       release: {{ .Release.Name }}
       exporter: enabled
 {{- end }}

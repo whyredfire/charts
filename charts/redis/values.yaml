@@ -7,7 +7,7 @@ global:
     openshift:
       adaptSecurityContext: auto
 
-## -- Image information for Redis HA
+## -- Image information for Redis
 ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 ##
 image:
@@ -18,10 +18,10 @@ image:
   # -- Redis image pull policy
   pullPolicy: IfNotPresent
 
-# -- Full name of the Redis HA Resources
+# -- Full name of the Redis resources
 fullnameOverride: ""
 
-# -- Name override for Redis HA resources
+# -- Name override for Redis resources
 nameOverride: ""
 
 ## Reference to one or more secrets to be used when pulling images
@@ -37,7 +37,7 @@ imagePullSecrets: []
 # -- The statefulset pod management policy
 podManagementPolicy: OrderedReady
 
-# -- Kubernetes priorityClass name for the redis-ha-server pod
+# -- Kubernetes priorityClass name for the redis-server pod
 priorityClassName: ""
 
 # -- Custom labels for the redis pod
@@ -53,7 +53,7 @@ configmap:
 
 ## ConfigMap Test Parameters
 configmapTest:
-  # -- Image for redis-ha-configmap-test hook
+  # -- Image for redis-configmap-test hook
   image:
     # -- Repository of the configmap shellcheck test image.
     repository: koalaman/shellcheck
@@ -68,7 +68,7 @@ serviceAccount:
   # -- Specifies whether a ServiceAccount should be created
   create: true
   # -- The name of the ServiceAccount to use.
-  # If not set and create is true, a name is generated using the redis-ha.fullname template
+  # If not set and create is true, a name is generated using the redis.fullname template
   name: ""
   # -- opt in/out of automounting API credentials into container.
   # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
@@ -301,7 +301,7 @@ affinity: |
 ##     requiredDuringSchedulingIgnoredDuringExecution:
 ##       - labelSelector:
 ##           matchLabels:
-##             app: {{ template "redis-ha.name" . }}
+##             app: {{ template "redis.name" . }}
 ##             release: {{ .Release.Name }}
 ##         topologyKey: kubernetes.io/hostname
 ##     preferredDuringSchedulingIgnoredDuringExecution:
@@ -309,7 +309,7 @@ affinity: |
 ##         podAffinityTerm:
 ##           labelSelector:
 ##             matchLabels:
-##               app:  {{ template "redis-ha.name" . }}
+##               app:  {{ template "redis.name" . }}
 ##               release: {{ .Release.Name }}
 ##           topologyKey: failure-domain.beta.kubernetes.io/zone
 ##
@@ -477,7 +477,7 @@ authKey: auth
 persistentVolume:
   # -- Enable persistent volume
   enabled: true
-  ## redis-ha data Persistent Volume Storage Class
+  ## redis data Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
   ## If undefined (the default) or set to null, no storageClassName spec is
@@ -485,7 +485,7 @@ persistentVolume:
   ##   GKE, AWS & OpenStack)
   ##
   # storageClass: "-"
-  # -- redis-ha data Persistent Volume Storage Class
+  # -- redis data Persistent Volume Storage Class
   storageClass: ~
   # -- Persistent volume access modes
   accessModes:
@@ -588,7 +588,7 @@ prometheusRule:
     # Example:
     # - alert: RedisPodDown
     #   expr: |
-    #     redis_up{job="{{ include "redis-ha.fullname" . }}"} == 0
+    #     redis_up{job="{{ include "redis.fullname" . }}"} == 0
     #   for: 5m
     #   labels:
     #     severity: critical

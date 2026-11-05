@@ -36,7 +36,7 @@ The following table lists the configurable parameters of the Redis chart and the
 | `authKey` | Defines the key holding the redis password in existing secret. | string | `"auth"` |
 | `authSecretAnnotations` | Annotations for auth secret | object | `{}` |
 | `configmap.labels` | Custom labels for the redis configmap | object | `{}` |
-| `configmapTest.image` | Image for redis-ha-configmap-test hook | object | `{"repository":"koalaman/shellcheck","tag":"v0.11.0"}` |
+| `configmapTest.image` | Image for redis-configmap-test hook | object | `{"repository":"koalaman/shellcheck","tag":"v0.11.0"}` |
 | `configmapTest.image.repository` | Repository of the configmap shellcheck test image. | string | `"koalaman/shellcheck"` |
 | `configmapTest.image.tag` | Tag of the configmap shellcheck test image. | string | `"v0.11.0"` |
 | `configmapTest.resources` | Resources for the ConfigMap test pod | object | `{}` |
@@ -47,7 +47,7 @@ The following table lists the configurable parameters of the Redis chart and the
 | `extraInitContainers` | Extra init containers to include in StatefulSet | list | `[]` |
 | `extraLabels` | Labels added here are applied to all created resources | object | `{}` |
 | `extraVolumes` | Extra volumes to include in StatefulSet | list | `[]` |
-| `fullnameOverride` | Full name of the Redis HA Resources | string | `""` |
+| `fullnameOverride` | Full name of the Redis resources | string | `""` |
 | `global.compatibility` | Openshift compatibility options | object | `{"openshift":{"adaptSecurityContext":"auto"}}` |
 | `global.priorityClassName` | Default priority class for all components | string | `""` |
 | `hardAntiAffinity` | Whether the Redis server pods should be forced to run on separate nodes. # This is accomplished by setting their AntiAffinity with requiredDuringSchedulingIgnoredDuringExecution as opposed to preferred. # Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature | bool | `true` |
@@ -59,7 +59,7 @@ The following table lists the configurable parameters of the Redis chart and the
 | `imagePullSecrets` | Reference to one or more secrets to be used when pulling redis images | list | `[]` |
 | `init.resources` | Extra init resources | object | `{}` |
 | `labels` | Custom labels for the redis pod | object | `{}` |
-| `nameOverride` | Name override for Redis HA resources | string | `""` |
+| `nameOverride` | Name override for Redis resources | string | `""` |
 | `networkPolicy.annotations` | Annotations for NetworkPolicy | object | `{}` |
 | `networkPolicy.egressRules` | user can define egress rules too, uses the same structure as ingressRules | list | `[{"ports":[{"port":53,"protocol":"UDP"},{"port":53,"protocol":"TCP"}],"selectors":[{"namespaceSelector":{}},{"ipBlock":{"cidr":"169.254.0.0/16"}}]}]` |
 | `networkPolicy.egressRules[0].selectors[0]` | Allow all destinations for DNS traffic | object | `{"namespaceSelector":{}}` |
@@ -72,10 +72,10 @@ The following table lists the configurable parameters of the Redis chart and the
 | `persistentVolume.enabled` | Enable persistent volume | bool | `true` |
 | `persistentVolume.labels` | Labels for the volume | object | `{}` |
 | `persistentVolume.size` | Persistent volume size | string | `"10Gi"` |
-| `persistentVolume.storageClass` | redis-ha data Persistent Volume Storage Class | string | `nil` |
+| `persistentVolume.storageClass` | redis data Persistent Volume Storage Class | string | `nil` |
 | `podDisruptionBudget` | Pod Disruption Budget rules | object | `{}` |
 | `podManagementPolicy` | The statefulset pod management policy | string | `"OrderedReady"` |
-| `priorityClassName` | Kubernetes priorityClass name for the redis-ha-server pod | string | `""` |
+| `priorityClassName` | Kubernetes priorityClass name for the redis-server pod | string | `""` |
 | `redis.annotations` | Annotations for the redis statefulset | object | `{}` |
 | `redis.authClients` | It is possible to disable client side certificates authentication when "authClients" is set to "no" | string | `""` |
 | `redis.config` | Any valid redis config options in this section will be applied to each server, For multi-value configs use list instead of string (for example loadmodule) (see below) | object | see values.yaml |
@@ -132,7 +132,7 @@ The following table lists the configurable parameters of the Redis chart and the
 | `serviceAccount.annotations` | Annotations to be added to the service account for the redis statefulset | object | `{}` |
 | `serviceAccount.automountToken` | opt in/out of automounting API credentials into container. Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/ | bool | `false` |
 | `serviceAccount.create` | Specifies whether a ServiceAccount should be created | bool | `true` |
-| `serviceAccount.name` | The name of the ServiceAccount to use. If not set and create is true, a name is generated using the redis-ha.fullname template | string | `""` |
+| `serviceAccount.name` | The name of the ServiceAccount to use. If not set and create is true, a name is generated using the redis.fullname template | string | `""` |
 | `serviceLabels` | Custom labels for redis service | object | `{}` |
 | `sysctlImage.command` | sysctlImage command to execute | list | `[]` |
 | `sysctlImage.enabled` | Enable an init container to modify Kernel settings | bool | `false` |

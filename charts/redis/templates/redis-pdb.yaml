@@ -1,8 +1,8 @@
 {{- if .Values.podDisruptionBudget -}}
-apiVersion: {{ template "redis-ha.podDisruptionBudget.apiVersion" . }}
+apiVersion: {{ template "redis.podDisruptionBudget.apiVersion" . }}
 kind: PodDisruptionBudget
 metadata:
-  name: {{ template "redis-ha.fullname" . }}-pdb
+  name: {{ template "redis.fullname" . }}-pdb
   namespace: {{ .Release.Namespace | quote }}
   labels:
 {{ include "labels.standard" . | indent 4 }}
@@ -13,6 +13,6 @@ spec:
   selector:
     matchLabels:
       release: {{ .Release.Name }}
-      app: {{ template "redis-ha.name" . }}
+      app: {{ template "redis.name" . }}
 {{ toYaml .Values.podDisruptionBudget | indent 2 }}
 {{- end -}}

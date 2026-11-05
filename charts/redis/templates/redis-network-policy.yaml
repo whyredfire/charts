@@ -3,7 +3,7 @@
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: {{ template "redis-ha.fullname" . }}-network-policy
+  name: {{ template "redis.fullname" . }}-network-policy
   namespace: {{ .Release.Namespace | quote }}
 {{- if .Values.networkPolicy.annotations }}
   annotations:
@@ -20,7 +20,7 @@ spec:
   podSelector:
     matchLabels:
       release: {{ .Release.Name }}
-      app: {{ template "redis-ha.name" . }}
+      app: {{ template "redis.name" . }}
   policyTypes:
     - Ingress
     - Egress
@@ -29,7 +29,7 @@ spec:
       - podSelector: 
           matchLabels:
             release: {{ .Release.Name }}
-            app: {{ template "redis-ha.name" . }}
+            app: {{ template "redis.name" . }}
       ports:
       {{- include "redis-ports" . | nindent 6 }}
 {{-  range $rule := .Values.networkPolicy.egressRules }}
@@ -43,7 +43,7 @@ spec:
       - podSelector:
           matchLabels:
             release: {{ .Release.Name }}
-            app: {{ template "redis-ha.name" . }}
+            app: {{ template "redis.name" . }}
       ports: 
       {{- include "redis-ports" . | nindent 6 }}
 {{-  range $rule := .Values.networkPolicy.ingressRules }}

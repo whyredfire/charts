@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: {{ template "redis-ha.fullname" . }}-configmap-test
+  name: {{ template "redis.fullname" . }}-configmap-test
   namespace: {{ .Release.Namespace | quote }}
   labels:
 {{ include "labels.standard" . | indent 4 }}
@@ -29,4 +29,4 @@ spec:
   volumes:
   - name: config
     configMap:
-      name: {{ template "redis-ha.fullname" . }}-configmap
+      name: {{ template "redis.fullname" . }}-configmap

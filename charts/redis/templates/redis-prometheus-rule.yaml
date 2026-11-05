@@ -2,7 +2,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: {{ template "redis-ha.fullname" . }}
+  name: {{ template "redis.fullname" . }}
   {{- if .Values.prometheusRule.namespace }}
   namespace: {{ .Values.prometheusRule.namespace }}
   {{- end }}
@@ -11,7 +11,7 @@ metadata:
   {{- end }}
 spec:
   groups:
-    - name: {{ template "redis-ha.fullname" . }}
+    - name: {{ template "redis.fullname" . }}
       {{- if .Values.prometheusRule.interval }}
       interval: {{ .Values.prometheusRule.interval }}
       {{- end }}

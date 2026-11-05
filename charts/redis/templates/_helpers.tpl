@@ -4,7 +4,7 @@
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
-{{- define "redis-ha.name" -}}
+{{- define "redis.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -12,7 +12,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
-{{- define "redis-ha.fullname" -}}
+{{- define "redis.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -42,7 +42,7 @@ labels.standard prints the standard Helm labels.
 The standard labels are frequently used in metadata.
 */ -}}
 {{- define "labels.standard" -}}
-app: {{ template "redis-ha.name" . }}
+app: {{ template "redis.name" . }}
 heritage: {{ .Release.Service | quote }}
 release: {{ .Release.Name | quote }}
 chart: {{ template "chartref" . }}
@@ -64,9 +64,9 @@ Example output:
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "redis-ha.serviceAccountName" -}}
+{{- define "redis.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
-    {{ default (include "redis-ha.fullname" .) .Values.serviceAccount.name }}
+    {{ default (include "redis.fullname" .) .Values.serviceAccount.name }}
 {{- else -}}
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
@@ -75,7 +75,7 @@ Create the name of the service account to use
 {{/*
 Return the appropriate apiVersion for poddisruptionbudget.
 */}}
-{{- define "redis-ha.podDisruptionBudget.apiVersion" -}}
+{{- define "redis.podDisruptionBudget.apiVersion" -}}
 {{- if .Capabilities.APIVersions.Has "policy/v1" }}
 {{- print "policy/v1" -}}
 {{- else -}}
