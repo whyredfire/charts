@@ -72,16 +72,6 @@ Create the name of the service account to use
 {{- end -}}
 {{- end -}}
 
-{{- define "redis-ha.masterGroupName" -}}
-{{- $masterGroupName := tpl ( .Values.redis.masterGroupName | default "") . -}}
-{{- $validMasterGroupName := regexMatch "^[\\w-\\.]+$" $masterGroupName -}}
-{{- if $validMasterGroupName -}}
-{{ $masterGroupName }}
-{{- else -}}
-{{ required "A valid .Values.redis.masterGroupName entry is required (matching ^[\\w-\\.]+$)" ""}}
-{{- end -}}
-{{- end -}}
-
 {{/*
 Return the appropriate apiVersion for poddisruptionbudget.
 */}}
@@ -139,16 +129,8 @@ Usage:
 - port: {{ .Values.redis.port }}
   protocol: TCP
 {{- end -}}
-{{- if ne (int .Values.sentinel.port) 0 }}
-- port: {{ .Values.sentinel.port }}
-  protocol: TCP
-{{- end -}}
 {{- if ne (int .Values.redis.tlsPort) 0 }}
 - port: {{ .Values.redis.tlsPort }}
-  protocol: TCP
-{{- end -}}
-{{- if ne (int .Values.sentinel.tlsPort) 0 }}
-- port: {{ .Values.sentinel.tlsPort }}
   protocol: TCP
 {{- end -}}
 {{- end -}}

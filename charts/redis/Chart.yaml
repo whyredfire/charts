@@ -1,5 +1,5 @@
 apiVersion: v2
-name: redis-ha
+name: redis
 home: https://redis.io/
 keywords:
 - redis
@@ -7,12 +7,13 @@ keywords:
 - database
 version: 4.39.0
 appVersion: 8.8.0
-description: This Helm chart provides a highly available Redis implementation with a master/slave configuration and uses Sentinel sidecars for failover management
+description: A standalone Redis server, stripped down from the redis-ha chart (no Sentinel, HAProxy or replication)
 icon: https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/24/external-redis-an-in-memory-data-structure-project-implementing-a-distributed-logo-shadow-tal-revivo.png
 maintainers:
-- email: aaron.layfield@gmail.com
-  name: dandydeveloper
+- email: whyredfire@gmail.com
+  name: whyredfire
 sources:
 - https://redis.io/download
+- https://github.com/whyredfire/charts/blob/master/charts/redis
 - https://github.com/DandyDeveloper/charts/blob/master/charts/redis-ha
 - https://github.com/oliver006/redis_exporter
