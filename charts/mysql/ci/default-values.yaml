@@ -1,0 +1,3 @@
+auth:
+  rootPassword: ci-root
+  password: ci-app

@@ -1,0 +1,16 @@
+apiVersion: v2
+name: mysql
+home: https://www.mysql.com/
+keywords:
+- mysql
+- database
+- sql
+version: 0.1.0
+appVersion: 9.7.4
+description: A single MySQL server on the official image, without replication or backups
+maintainers:
+- email: whyredfire@gmail.com
+  name: whyredfire
+sources:
+- https://github.com/whyredfire/charts/blob/master/charts/mysql
+- https://hub.docker.com/_/mysql
